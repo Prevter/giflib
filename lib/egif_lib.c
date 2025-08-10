@@ -16,6 +16,8 @@ two modules will be linked.  Preserve this property!
 
 #ifdef _WIN32
 #include <io.h>
+#define S_IRUSR S_IREAD
+#define S_IWUSR S_IWRITE
 #else
 #include <unistd.h>
 #include <sys/types.h>
@@ -59,10 +61,10 @@ EGifOpenFileName(const char *FileName, const bool TestExistence, int *Error)
 
     if (TestExistence)
         FileHandle = open(FileName, O_WRONLY | O_CREAT | O_EXCL, 
-			  S_IREAD | S_IWRITE);
+			  S_IRUSR | S_IWUSR);
     else
         FileHandle = open(FileName, O_WRONLY | O_CREAT | O_TRUNC, 
-			  S_IREAD | S_IWRITE);
+			  S_IRUSR | S_IWUSR);
 
     if (FileHandle == -1) {
         if (Error != NULL)
